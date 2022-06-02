@@ -1,11 +1,35 @@
 <html>
+
 <head>
-    <title>Second Lesson</title>
+    <meta charset="ut8" />
+    <title>Test Driven Development</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
 </head>
 
 <body>
-    
-<script src="/HomeAsmnts/HA_19.js"></script>
+    <div id="mocha"></div>
+
+    <script src="https://unpkg.com/chai/chai.js"></script>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+
+    <script class="mocha-init">
+        mocha.setup('bdd');
+        mocha.checkLeaks();
+        const assert = chai.assert;
+        const expect = chai.expect;
+    </script>
+
+    <!-- <script src="lessonsSasha/lesson20_calc.js"></script>
+    <script src="spec/20spec.js"></script> -->
+
+    <script src="HomeAsmnts/HA_20.js"></script>
+    <script src="spec/20spec_ha.js"></script>
+
+
+    <script class="mocha-exec">
+        mocha.run();
+    </script>
 
 </body>
 
