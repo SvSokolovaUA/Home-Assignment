@@ -1,3 +1,5 @@
+'use strict'
+
 function getFizzBuzz(n) {
     let result  = "";
     if (n % 3 == 0 && n % 5 != 0) {
@@ -11,3 +13,9 @@ function getFizzBuzz(n) {
         return n;
    }
 }
+
+let result = "";
+for (let i = 1; i <= 30; i += 1) {
+    result = result + i + ' - ' + getFizzBuzz(i) + ", ";
+}
+console.log(result);
