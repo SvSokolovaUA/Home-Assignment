@@ -10,7 +10,7 @@ function getFizzBuzz(n) {
         return "FizzBuzz";
     } else if (n % 3 != 0 || n % 5 != 0) {
         result += n;
-        return n;
+        return result;
    }
 }
 
