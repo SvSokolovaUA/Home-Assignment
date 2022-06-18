@@ -1,4 +1,8 @@
 'use strict'
+
+let talk = prompt ("Скажите что-то Бобу");
+alert (tellToBob(talk));
+
 function tellToBob(sent) {
     let newSent = sent.substr(0, sent.length - 1);
     let lastLetter = sent[sent.length - 1];
