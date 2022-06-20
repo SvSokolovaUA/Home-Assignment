@@ -10,21 +10,24 @@ function tellToBob(sent) {
     if (sent.length == 0) {
         return "Хорошо. Пусть так и будет!";
     } else if (lastLetter == "?") {
-        if (!getIfUpper(newSent)) {
-            return "Конечно";
-        } else {return "Успокойся, я знаю, что делаю!"};
-    } else if (getIfUpper(sent)) {
+        if (getIfUpper(newSent)) {
+            return  "Успокойся, я знаю, что делаю!"
+        } else {return "Конечно"; };
+    } 
+    
+    else if (getIfUpper(sent)) {
         return "Вау, расслабься!";
     } else {
         return "Всё равно";
     }
 }
 
+
 function getIfUpper (sent) {
     
     for (let i=0; i<sent.length; i+=1) {
         let letter = sent[i];
-        if (letter == letter.toLowerCase()) {
+        if (letter == letter.toLowerCase() && letter.toLowerCase() != " ") {
             return false;
         }
     }
