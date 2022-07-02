@@ -15,7 +15,7 @@ const blockhead3 = document.querySelector("#blockhead3");
 blockhead3.style.color = "rgb(7, 1, 53)";
 blockhead3.style.fontWeight = "bold";
 
-const blockbody1 = document.querySelector("#blockbody1");
+const blockbody1 = document.querySelector("#blockbody");
 blockbody1.style.color = "rgb(43, 41, 53)";
 
 const blockbody2 = document.querySelector(".blockbody");
@@ -36,5 +36,9 @@ exampleRev.style.fontWeight = "bold";
 exampleRev.style.fontStyle = "italic";
 
 const example = document.querySelector(".example");
+example.style.color = "rgb(43, 41, 53)";
 example.style.fontWeight = "bold";
 example.style.fontStyle = "italic";
+
+const list = document.querySelector("#list");
+list.style.color = "rgb(43, 41, 53)";
