@@ -58,15 +58,11 @@
   // с информацией об общей стоимости корзины для каждого, сортировка по самой дорогой покупке, 
   // в убывающем порядке
 
-prices.nothing = 0;
-
-    const clientsExpensiveGoods = clients.map(c => 
-        ({name: c, basketCost: c.goods.reduce((prev, cur) => prev + prices[cur], 0)}))
-        .filter(c => c.basketCost > 3)
-        .map(c => ({name: c, basketCost: c, 
-            MostExpensive: c.goods.reduce((prev, cur) => 
-            prices[prev] < prices[cur] ? cur: prev, prices.nothing)
-        }));
-
+const clientsExpensiveGoods = clients.map(c => 
+  ({name: c.name, goods: c.goods, basketCost: c.goods.reduce((prev, cur) => prev + prices[cur], 0)}))
+  .filter(c => c.basketCost > 3)
+  .map(c => ({name: c.name, basketCost: c.basketCost, mostExpensive: c.goods.reduce((prev, cur) => 
+    prices[prev] < prices[cur] ? cur : prev, 0)
+  }));
     
-        console.log(clientsExpensiveGoods);
+console.log(clientsExpensiveGoods);
