@@ -1,0 +1,69 @@
+<html>
+
+<head>
+  <meta charset="utf8" />
+  <title>Second Lesson</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js"></script> -->
+  <link rel="stylesheet" href="styles/simple.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css">
+</head>
+
+<body style="background-color:blanchedalmond">
+
+  <div class="todo-app grid-container">
+    <h1 id="todo-title" class="app title">
+      Tasks <i>List</i> <span class="hidden">Hidden</span>
+    </h1>
+    </div>
+    <div class="add-todo">
+      <form id='todo-form' class="grid-x">
+        <input placeholder="New Task" id='new-item-text' name="text" type="text"
+          class="cell small-10" />
+        <button class="button cell small-2">Add</button>
+      </form>
+    </div>
+    <hr />
+    <div class="todo-list">
+      <h2>Tasks:</h2>
+      <div class="todo-filter">
+        <input type="text" name='filter' id='filter' placeholder="filter">
+      </div>
+      <ul class="no-bullet" id="task-list">
+
+        <li class='todo-item' id="item1">
+          <input type="checkbox" /> 
+          task 1 
+          <a class="delete" href="#">x</a>
+        </li> 
+        <li class='todo-item' id="item2">
+          <input type="checkbox" /> 
+          task 2 
+          <a class="delete" href="#">x</a>
+        </li>
+        <li class='todo-item' id="item3">
+          <input type="checkbox" /> 
+          task 3 
+          <a class="delete" href="#">x</a>
+        </li>
+        <li class='todo-item' id="item4">
+          <input type="checkbox" /> 
+          task 4 
+          <a class="delete" href="#">x</a>
+        </li>
+
+      </ul>
+      <hr />
+      <button class='clear-tasks button'>Clear Tasks</button>
+    </div>
+    <ol>
+      <li class="todo-item">element 1</li>
+      <li class="todo-item">element 2</li>
+      <li class="todo-item">element 3</li>
+      <li>element 3</li>
+    </ol>
+    <p class="todo-item"></p>
+  <script src="./HomeAsmnts/HA_34.js"></script>
+</body>
+
+</html>
