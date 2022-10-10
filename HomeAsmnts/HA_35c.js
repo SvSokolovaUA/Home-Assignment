@@ -1,20 +1,23 @@
 'use strict';
 
 const filter = document.getElementById("filter");
-
-filter.addEventListener("keydown", onKeydown);
 const tasksToFilter = Array.from(document.querySelectorAll("li"));
 
-function onKeydown(e) {
+filter.addEventListener("keyup", onKeyup);
+
+function onKeyup(e) {
     e.preventDefault();
     
     tasksToFilter.forEach(el => {
-        // let text = el.firstElementChild.nextSibling.textContent;
-        if (el.textContent !== filter.value) {
+
+        if (el.textContent !== `\n           \n          ${filter.value} \n          x\n        `) {
         el.style.display = "none";
+        } else {
+
+            el.style.display = "";
         }
+    
     });
-  
 }
 
 
