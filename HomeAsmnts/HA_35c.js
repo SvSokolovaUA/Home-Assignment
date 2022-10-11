@@ -10,11 +10,11 @@ function onKeyup(e) {
     
     tasksToFilter.forEach(el => {
 
-        if (el.textContent !== `\n           \n          ${filter.value} \n          x\n        `) {
-        el.style.display = "none";
-        } else {
-
+        if (el.textContent.includes(filter.value)) {
             el.style.display = "";
+        } else {
+            el.style.display = "none";
+
         }
     
     });
