@@ -3,6 +3,7 @@
 const tasks = document.getElementById("task-list");
 const form = document.getElementById("todo-form");
 const taskInput = form.querySelector("input");
+let currentId = 1;
 
 let currentTasks;
 
@@ -16,8 +17,33 @@ if (localStorage.getItem("current") === null) {
 
     currentTasks = JSON.parse(localStorage.getItem("current"));
     console.log(currentTasks);
-    currentTasks.forEach(el => tasks.appendChild(el));
 
+    currentTasks.forEach(el => createTask(el));
+
+}
+
+
+function createTask(text) {
+    const li = document.createElement("li");
+    li.className = "todo-item";
+    li.id = `item${currentId}`;
+    currentId += 1;
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+
+    const taskText = document.createTextNode(` ${text} `);
+
+    const deleteButton = document.createElement("a");
+    deleteButton.className = "delete";
+    deleteButton.href = "#"
+    deleteButton.appendChild(document.createTextNode("x"));
+
+    li.appendChild(checkbox);
+    li.appendChild(taskText);
+    li.appendChild(deleteButton);
+
+    tasks.appendChild(li);
 }
 
 // Удаление пункта в списке
@@ -33,7 +59,7 @@ function deleteItem(event) {
   let newCurrentTasks = [];
 
   currentTasks.forEach(el => {
-    if (event.target.parentNode !== el) {
+    if (event.target.parentNode.textContent.includes(el)) {
         newCurrentTasks.push(el);
     }
   })
@@ -46,7 +72,6 @@ tasks.addEventListener("click", deleteItem);
 
 
 // Добавление новой задачи в список
-let currentId = 1;
 
 function onNewTaskSubmit(e) {
   e.preventDefault();
@@ -56,27 +81,9 @@ function onNewTaskSubmit(e) {
 
   if (text === "") return;
 
-  const li = document.createElement("li");
-  li.className = "todo-item";
-  li.id = `item${currentId}`;
-  currentId += 1;
+  createTask(text);
 
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-
-  const taskText = document.createTextNode(` ${text} `);
-
-  const deleteButton = document.createElement("a");
-  deleteButton.className = "delete";
-  deleteButton.href = "#"
-  deleteButton.appendChild(document.createTextNode("x"));
-
-  li.appendChild(checkbox);
-  li.appendChild(taskText);
-  li.appendChild(deleteButton);
-
-  tasks.appendChild(li);
-  currentTasks.push(li);
+  currentTasks.push(text);
 
   localStorage.setItem("current", JSON.stringify(currentTasks));
   
