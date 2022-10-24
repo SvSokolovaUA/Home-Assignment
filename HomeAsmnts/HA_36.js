@@ -4,37 +4,48 @@ const tasks = document.getElementById("task-list");
 const form = document.getElementById("todo-form");
 const taskInput = form.querySelector("input");
 
-// Удаление пункта в списке
-// function deleteItem(event) {
-//   if (
-//     event.target.nodeName != "A" ||
-//     !event.target.classList.contains("delete")
-//   ) {
-//     return;
-//   }
-//   event.target.parentNode.remove();
-// }
-
-// tasks.addEventListener("click", deleteItem);
-
-
-// Добавление новой задачи в список
 let currentTasks;
 
+// проверка localStorage на наличие в нем задач по ключу "current", если localStorage не пустой - 
+// загрузить ранее созданные задачи на страницу
 if (localStorage.getItem("current") === null) {
 
     currentTasks = [];
-    
+
 } else { 
 
     currentTasks = JSON.parse(localStorage.getItem("current"));
     console.log(currentTasks);
     currentTasks.forEach(el => tasks.appendChild(el));
 
+}
+
+// Удаление пункта в списке
+function deleteItem(event) {
+  if (
+    event.target.nodeName != "A" ||
+    !event.target.classList.contains("delete")
+  ) {
+    return;
+  }
+  event.target.parentNode.remove();
+
+  let newCurrentTasks = [];
+
+  currentTasks.forEach(el => {
+    if (event.target.parentNode !== el) {
+        newCurrentTasks.push(el);
     }
+  })
 
-// console.log(currentTasks);
+  localStorage.setItem("current", JSON.stringify(newCurrentTasks));
 
+}
+
+tasks.addEventListener("click", deleteItem);
+
+
+// Добавление новой задачи в список
 let currentId = 1;
 
 function onNewTaskSubmit(e) {
@@ -68,29 +79,25 @@ function onNewTaskSubmit(e) {
   currentTasks.push(li);
 
   localStorage.setItem("current", JSON.stringify(currentTasks));
-
-  console.log(currentTasks);
   
 }
 
 form.addEventListener("submit", onNewTaskSubmit);
 
-
-
 // фильтр - убирает, все, что не соответствует введенному тексту
-// const filterInput = document.getElementById("filter");
+const filterInput = document.getElementById("filter");
 
-// function onFilterChange() {
-//   const tasksForFiltering = document.querySelectorAll("li.todo-item");
+function onFilterChange() {
+  const tasksForFiltering = document.querySelectorAll("li.todo-item");
 
-//   tasksForFiltering.forEach(task => {
-//     if (task.textContent.includes(filterInput.value)) {
-//       task.style.display = "";
-//     } else {
-//       task.style.display = "none";
-//     }
+  tasksForFiltering.forEach(task => {
+    if (task.textContent.includes(filterInput.value)) {
+      task.style.display = "";
+    } else {
+      task.style.display = "none";
+    }
 
-//   });
-// }
+  });
+}
 
-// filterInput.addEventListener("keyup", onFilterChange);
+filterInput.addEventListener("keyup", onFilterChange);
