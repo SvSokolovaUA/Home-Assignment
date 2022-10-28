@@ -22,6 +22,9 @@ if (localStorage.getItem("current") === null) {
     let lastTask = currentTasks[currentTasks.length-1];
     id = lastTask.id + 1;
 
+    const checkBox = tasks.querySelectorAll("input");
+    checkBox.forEach(el => el.addEventListener("change", onCheckboxsChange));
+
 }
 
 function createTask(task) {
@@ -32,6 +35,7 @@ function createTask(task) {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = task.checkboxStatus;
+    checkbox.addEventListener("change", onCheckboxsChange)
 
     const taskText = document.createTextNode(` ${task.text} `);
     if(task.checkboxStatus === true) {
@@ -138,8 +142,7 @@ function onCheckboxsChange(e) {
 
 }
 
-const checkBox = tasks.querySelectorAll("input");
-checkBox.forEach(el => el.addEventListener("change", onCheckboxsChange));
+
 
 
 // фильтр - убирает, все, что не соответствует введенному тексту
