@@ -35,8 +35,8 @@ function createTask(task) {
 
     const taskText = document.createTextNode(` ${task.text} `);
     if(task.checkboxStatus === true) {
-        taskText.style.color = "grey";
-    } else {taskText.style.color = "black"}
+        li.style.color = "grey";
+    } else {li.style.color = "black"}
 
     const deleteButton = document.createElement("a");
     deleteButton.className = "delete";
@@ -115,8 +115,8 @@ function onCheckboxsChange(e) {
     const taskText = e.target.nextSibling.textContent;
 
     if (e.target.checked === true) {
-        taskText.style.color = "grey";
-    } else {taskText.style.color = "black";}
+        e.target.parentNode.style.color = "grey";
+    } else {e.target.parentNode.style.color = "black";}
 
     let newCurrentTasks = [];
 
