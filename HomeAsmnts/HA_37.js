@@ -62,6 +62,9 @@ function deleteItem(event) {
     ) {
         return;
     }
+    console.log(event.target.parentNode.querySelector("input"));
+
+    event.target.parentNode.querySelector("input").removeEventListener("change", onCheckboxsChange);
 
     event.target.parentNode.remove();
 
@@ -134,16 +137,12 @@ function onCheckboxsChange(e) {
         }
 
         newCurrentTasks.push({text: el.text, id: el.id, checkboxStatus: el.checkboxStatus});
-        console.log(newCurrentTasks);
-
+        
     })
 
     localStorage.setItem("current", JSON.stringify(newCurrentTasks));
 
 }
-
-
-
 
 // фильтр - убирает, все, что не соответствует введенному тексту
 const filterInput = document.getElementById("filter");
