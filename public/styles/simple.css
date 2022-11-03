@@ -1,0 +1,11 @@
+.red {
+    color: red;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  ul li:nth-child(3) {
+    color:coral;
+  }
