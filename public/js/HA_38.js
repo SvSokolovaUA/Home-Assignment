@@ -4,7 +4,7 @@ const tasks = document.getElementById("task-list");
 
 fetch("api/result")
     .then(response => response.json())
-    .then(obj => obj.forEach(createTask(obj)));
+    .then((task => task.forEach(task => createTask(task))));
 
 function createTask(task) {
     const li = document.createElement("li");
