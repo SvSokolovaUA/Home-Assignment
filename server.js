@@ -26,14 +26,24 @@ app.post('/api/task-add', function(req, res) {
 
 app.post('/api/task-del', function(req, res) {
   
-  tasks.splice(req.body.id-1, 1);
+  let indToDel;
+  
+  for (let i=0; i<tasks.length; i+=1) {
+    if (tasks[i].id === req.body.id) {
+      indToDel = i;
+    }
+  }
+
+  tasks.splice(indToDel, 1);
+
   res.end();
 
 });
 
 app.post('/api/task-change', function(req, res) {
   
-  tasks.splice(req.body.id-1, 1, req.body);
+  tasks[req.body.id-1].checkboxStatus = req.body.checkboxStatus;
+ 
   res.end();
 
 });
