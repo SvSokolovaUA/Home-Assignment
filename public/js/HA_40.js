@@ -1,0 +1,163 @@
+'use strict';
+
+const post = (url, data) => {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+  });
+}
+
+const tasks = document.getElementById("task-list");
+const form = document.getElementById("todo-form");
+const taskInput = form.querySelector("input");
+const clearTasksButton = document.getElementsByClassName("clear-tasks button")[0];
+
+console.log(tasks);
+
+function showNewTodo({ id, text, isDone, isFiltered }) {
+
+  const li = document.createElement("li");
+  li.className = "todo-item";
+  li.id = `item_${id}`;
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = isDone;
+
+  const taskText = document.createTextNode(` ${text} `);
+
+  const deleteButton = document.createElement("a");
+  deleteButton.className = "delete";
+  deleteButton.href = "#"
+  deleteButton.appendChild(document.createTextNode("x"));
+
+  li.appendChild(checkbox);
+  li.appendChild(taskText);
+  li.appendChild(deleteButton);
+
+  tasks.appendChild(li);
+
+  if (!isFiltered) {
+      li.style.display = "";
+    } else {
+      li.style.display = "none";
+    }
+
+}
+
+function onNewTodo(event) {
+  event.preventDefault();
+
+  const text = taskInput.value;
+  if (text == '') return;
+  taskInput.value = '';
+
+  post('/api/task', { text, isDone: false })
+    .then(res => res.json())
+    .then(todo => showNewTodo(todo));
+}
+
+function onStatusChanged(event) {
+  const target = event.target;
+
+  const checked = target.checked;
+  const parent = target.parentElement;
+  const [, id] = parent.id.split('_');
+  post(`/api/task/${id}/update`, { isDone: checked })
+    .then(res => {
+      if (!res.ok) {
+        target.checked = !checked;
+      }
+    })
+    .catch(_ => {
+      target.checked = !checked;
+    });
+}
+
+form.addEventListener("submit", onNewTodo);
+
+fetch('/api/tasks')
+  .then(res => res.json())
+  .then(tasks => tasks.forEach(t => showNewTodo(t)));
+
+
+function onTaskDelete (event) {
+
+  event.preventDefault();
+
+  const [, id] = event.target.parentNode.id.split('_');
+  
+  post('/api/delete-task', {id: Number(id)})
+  .then(res => {
+    if (!res.ok) {
+      return;
+    } else {
+    event.target.parentNode.remove();
+    }
+  })
+  
+}
+
+function onTasks (event) {
+  const target = event.target;
+
+  if (target.nodeName === "INPUT") {
+    onStatusChanged(event);
+  } else if (target.nodeName === "A" & target.classList.contains('delete')) {
+    onTaskDelete(event);
+  } else { 
+    return;
+    }
+}
+
+tasks.addEventListener("click", onTasks);
+
+function onClearTasks(event) {
+  event.preventDefault();
+
+  const allTasks = Array.from(tasks.children);
+
+  post('api/clear', allTasks)
+    .then(res => {
+      if (!res.ok) {
+        return;
+      } else {
+        allTasks.forEach(task => task.remove());
+      }
+  })
+
+}
+
+clearTasksButton.addEventListener('click', onClearTasks);
+
+const filter = document.getElementById('filter');
+
+function onFilter(event) {
+event.preventDefault();
+
+const tasksForFiltering = document.querySelectorAll("li.todo-item");
+
+const text = filter.value;
+post('api/filter', text)
+.then(res => {
+  if (!res.ok) {
+    return;
+  } else {
+
+    tasksForFiltering.forEach(task => {
+      if (task.textContent.includes(text)) {
+        task.style.display = "";
+      } else {
+        task.style.display = "none";
+      }
+    });
+  }
+  filter.value = "";
+})
+  
+}
+
+filter.addEventListener('keyup', onFilter);
