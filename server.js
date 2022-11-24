@@ -19,7 +19,14 @@ app.use(express.static("public"));
 app.use(express.json());
 
 app.post('/api/delete-task', function(req, res) {
-  state.tasks.splice(req.body.id, 1)
+let taskList = state.tasks;
+  let i=0;
+  for (; i<taskList.length; i+=1) {
+    if (taskList[i].id === req.body.id) {
+      break;
+    }
+  }
+  taskList.splice(i, 1)
   res.end();
 });
 
