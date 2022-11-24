@@ -45,7 +45,7 @@ app.post('/api/task/:id/update', (req, res) => {
   res.end();
 })
 
-app.post('api/clear', (req, res) => {
+app.post('/api/clear', (req, res) => {
   state.tasks = [];
   console.log(state.tasks);
   res.end();
@@ -55,11 +55,11 @@ app.get('/api/tasks', (req, res) => {
   res.json(state.tasks);
 });
 
-app.post('api/filter', (req, res) => {
+app.post('/api/filter', (req, res) => {
   
   state.tasks.forEach(task => {
-    if (task.text.includes(req.body)) {
-      tasks.isFiltered = true;
+    if (task.text.includes(req.body.text)) {
+      task.isFiltered = true;
     }
   })
   res.end();

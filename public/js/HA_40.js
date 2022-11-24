@@ -141,12 +141,12 @@ event.preventDefault();
 const tasksForFiltering = document.querySelectorAll("li.todo-item");
 
 const text = filter.value;
-post('api/filter', text)
+post('api/filter', {text: text})
 .then(res => {
   if (!res.ok) {
     return;
   } else {
-
+    
     tasksForFiltering.forEach(task => {
       if (task.textContent.includes(text)) {
         task.style.display = "";
