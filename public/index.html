@@ -20,6 +20,26 @@
         <input placeholder="New Task" id='new-item-text' name="text" type="text"
           class="cell small-10" />
         <button class="button cell small-2">Add</button>
+        
+        <br/>
+        
+        <input type="checkbox" id = "urgent-task" />
+        
+        <div class="row">
+          <select id = 'urgent-not-urgent'>
+            <option>Urgent. Choose due date</option>
+            <option>Not urgent</option>
+          </select>
+        
+          <input type="date" id = "due-date" />
+        </div>
+        <!-- 
+          two type of tasks:
+          Task {id, text, isDone}
+          UrgentTask extends Task {id, text, isDone, dueDate}
+         -->
+
+
       </form>
     </div>
     <hr />
@@ -34,7 +54,7 @@
       <hr />
       <button class='clear-tasks button'>Clear Tasks</button>
     </div>
-  <script src="./js/HA_41.js" type="module"></script>
+  <script src="./js/HA_42.js" type="module"></script>
 </body>
 
 </html>

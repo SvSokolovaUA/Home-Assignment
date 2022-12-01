@@ -6,6 +6,10 @@
     display: none;
   }
   
-  ul li:nth-child(3) {
-    color:coral;
+  .row {
+    
+    display: flex;
+    
   }
+
+  
