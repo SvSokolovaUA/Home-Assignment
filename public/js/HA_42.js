@@ -18,22 +18,61 @@ const urgentTask = document.getElementById("urgent-task");
 const date = document.getElementById("due-date");
 const isUrgentTask = document.getElementById('urgent-not-urgent');
 
-function showNewTodo({ id, text, isDone, isUrgent, dueDate, isFiltered }) {
+class Task {
+    _isDone = false;
+    
+    constructor(text, isDone) {
+      this._isDone = isDone || this._isDone;
+      this._text = text;
+    }
+    
+    get text() {
+      return this._text;
+    }
+  
+    get isDone() {
+      return this._isDone;
+    }
+  
+  }
+  
+  class UrgentTask extends Task {
+    _isUrgent = true;
+  
+    constructor(text, isDone, isUrgent, dueDate) {
+      super(text, isDone);
+      this._dueDate = dueDate;
+      this._isUrgent = isUrgent || this._isUrgent;
+    }
+  
+    get isUrgent(){
+      return this._isUrgent;
+    }
+    
+    get dueDate() {
+      return this._dueDate;
+    }
+  
+  }
 
+function showNewTodo(todo) {
+    // { id, text, isDone, isUrgent, dueDate, isFiltered }
   const li = document.createElement("li");
   li.className = "todo-item";
-  li.id = `item_${id}`;
+  li.id = `item_${todo._id}`;
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
-  checkbox.checked = isDone;
+  if (todo._isDone) {
+  checkbox.checked = todo._isDone;
+  }
 
   let taskText;
-
-  if (isUrgent) {
-    taskText = document.createTextNode(` ${text}. Task is urgent. Due date - ${dueDate}  `);
+    
+  if (todo._isUrgent) {
+    taskText = document.createTextNode(` ${todo._text}. Task is urgent. Due date - ${todo._dueDate}  `);
   } else {
-    taskText = document.createTextNode(` ${text} `);
+    taskText = document.createTextNode(` ${todo._text} `);
   }
   
   const deleteButton = document.createElement("a");
@@ -47,7 +86,7 @@ function showNewTodo({ id, text, isDone, isUrgent, dueDate, isFiltered }) {
 
   tasks.appendChild(li);
 
-  if (!isFiltered) {
+  if (!todo._isFiltered) {
       li.style.display = "";
     } else {
       li.style.display = "none";
@@ -63,27 +102,30 @@ async function onNewTodo(event) {
   taskInput.value = '';
 
   let isUrgent;
-  let dueDate;
+  let newTask;
   let todo;
 
   if (urgentTask.checked) {
+
     isUrgent = true;
+    urgentTask.checked = false;
+
   } else {isUrgent = false; }
 
-  if (isUrgent) {
-    
-    dueDate = date.value;
-    let response = await post('/api/urgenttask', { text, isDone: false, isUrgent: isUrgent, dueDate });
-    todo = await response.json();
-    urgentTask.checked = false;
+    if (isUrgent) {
+
+        newTask = new UrgentTask(text, false, true, date.value);
+
+    } else {
         
-    } else { 
+        newTask = new Task(text, false);
+
+    }
+
+    const response = await post('/api/task', newTask);
+    todo = await response.json();
     
-        let response = await post('/api/task', { text, isDone: false, isUrgent: isUrgent });
-        todo = await response.json();
-  }
-  
-  showNewTodo(todo);
+    showNewTodo(todo);
 
 }
 
@@ -183,7 +225,7 @@ let isFiltered = await post('api/filter', {text: text});
             }
         });
     }
-  filter.value = "";
+
   
 }
 

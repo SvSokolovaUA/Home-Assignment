@@ -9,19 +9,13 @@ const app = express();
 // settings
 const port = 3000;
 
-class Tasks {
+class Task {
   _isDone = false;
-  _isUrgent = false;
-
-  constructor(id, text, isDone, isUrgent) {
+  
+  constructor(id, text, isDone) {
     this._isDone = isDone || this._isDone;
-    this._isUrgent = isUrgent || this._isUrgent;
     this._id = id;
     this._text = text;
-  }
-
-  get isDone() {
-    return this._isDone;
   }
 
   get id() {
@@ -32,13 +26,13 @@ class Tasks {
     return this._text;
   }
 
-  get isUrgent() {
-    return this._isUrgent;
+  get isDone() {
+    return this._isDone;
   }
 
 }
 
-class UrgentTasks extends Tasks {
+class UrgentTask extends Task {
   _isUrgent = true;
 
   constructor(id, text, isDone, isUrgent, dueDate) {
@@ -47,13 +41,14 @@ class UrgentTasks extends Tasks {
     this._isUrgent = isUrgent || this._isUrgent;
   }
 
+  get isUrgent(){
+    return this._isUrgent;
+  }
+
   get dueDate() {
     return this._dueDate;
   }
 
-  get isUrgent(){
-    return this._isUrgent;
-  }
 }
 
 const state = {
@@ -80,21 +75,21 @@ let taskList = state.tasks;
 let id = 1;
 
 app.post('/api/task', (req, res) => {
-  const task = { id, text: req.body.text, isDone: req.body.isDone, isUrgent: req.body.isUrgent };
-  state.tasks.push(new Tasks(task.id, task.text, task.isDone, task.isUrgent));
+
+  let task;
+  
+  if(req.body._isUrgent) {
+    task = new UrgentTask(id, req.body._text, req.body.isDone, req.body.isUrgent, req.body._dueDate);
+    console.log(task);
+  } else {
+    task = new Task(id, req.body._text, req.body.isDone);
+    } 
+    
+  state.tasks.push(task);
   id += 1;
   res.json(task);
-});
 
-app.post('/api/urgenttask', (req, res) => {
-  const task = { id, text: req.body.text, isDone: req.body.isDone, dueDate: req.body.dueDate, isUrgent: req.body.isUrgent };
-  
-  state.tasks.push(new UrgentTasks(task.id, task.text, task.isDone, task.isUrgent, task.dueDate));
-  id += 1;
-  res.json(task);
-  
 });
-
 
 app.post('/api/task/:id/update', (req, res) => {
   const id = Number(req.params.id);
@@ -102,7 +97,7 @@ app.post('/api/task/:id/update', (req, res) => {
 
   for(let i = 0; i < state.tasks.length; i += 1) {
     if (state.tasks[i].id === id) {
-      state.tasks[i].isDone = isDone;
+      state.tasks[i]._isDone = isDone;
       break;
     }
   }
