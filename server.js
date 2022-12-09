@@ -72,21 +72,30 @@ let taskList = state.tasks;
   res.end();
 });
 
-let id = 1;
+function* generateId() {
+  let i=1;
+  while(true) {
+    yield i;
+    i+=1;
+  }
+
+}
+
+const idGenerator = generateId();
 
 app.post('/api/task', (req, res) => {
 
   let task;
+  let id = idGenerator.next();
   
   if(req.body._isUrgent) {
-    task = new UrgentTask(id, req.body._text, req.body.isDone, req.body.isUrgent, req.body._dueDate);
+    task = new UrgentTask(id.value, req.body._text, req.body.isDone, req.body.isUrgent, req.body._dueDate);
     console.log(task);
   } else {
-    task = new Task(id, req.body._text, req.body.isDone);
+    task = new Task(id.value, req.body._text, req.body.isDone);
     } 
     
   state.tasks.push(task);
-  id += 1;
   res.json(task);
 
 });
